@@ -4,18 +4,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 interface ListItemProps {
   value: string;
-  handleDelete: (channelName: string) => void;
-  key: any;
+  handleDelete: (index: any) => void;
+  index: number;
 }
 
 export default function ListItem(props: ListItemProps) {
-const {value, handleDelete} = props;
+const {value, handleDelete, index} = props;
 
 return (
   <div className={styles.item}>
     <span className={styles.channelName}>{value}</span>
     <div className={styles.buttonsContainer}>
-      <button onClick={() => handleDelete(value)}>
+      <button onClick={() => handleDelete(index)}>
         <DeleteIcon className={styles.icons}/>
       </button>
       <button>
