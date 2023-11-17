@@ -1,0 +1,89 @@
+.title {
+  padding: 20px;
+  font-size: 2rem;
+  background-color: #222;
+  box-shadow: 0 2px black;
+  /* border: 1px white solid; */
+}
+.title h1 {
+  background-color: #222;
+  padding: 0px;
+  /* border: 1px white solid; */
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5%;
+  flex-grow: 1;
+  /* border: 1px white solid; */
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.mainContainer h2 {
+  font-size: 1.8rem;
+}
+
+.inputContainer {
+  display: flex;
+  margin: 20px 0;
+}
+
+.inputContainer input {
+  border: 1px solid hsl(270, 100%, 50%);
+  background-color: #333;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  width: 40vw;
+  height: 40px;
+  font-size: 1.5rem;
+  padding-left: 10px;
+}
+
+.inputContainer input:focus {
+  outline: none;
+  border: 3px solid #aaa;
+}
+
+.inputContainer button {
+  /* border: 1px solid black; */
+  border: none;
+  background-color: hsl(270, 100%, 50%);
+  cursor: pointer;
+  height: 40px;
+  width: 80px;
+  font-size: 1.3rem;
+}
+
+.inputContainer button:nth-child(even) {
+  border-right: 1px solid hsl(270, 100%, 35%);
+}
+
+.inputContainer button:disabled {
+  background-color: hsl(270, 30%, 30%);
+  cursor: not-allowed;
+}
+
+.channelsList {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  padding: 5px;
+  background-color: #222;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.channelsList > div:first-child {
+ border: none;
+}
+
+.channelsList > div {
+  border-top: solid 2px #111;
+}
