@@ -1,26 +1,35 @@
 import  styles  from '../styles/Home.module.css'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router';
 import ListItem from '@/components/ListItem';
 
 export default function Multitwitch() {
-  const router = useRouter();
-  const [inputVal, setInputVal] = useState('');
-  const [channelsList, setChannelsList] = useState<string[]>([]);
-
   const inputRef = useRef<HTMLInputElement | null>(null);
-
+  const router = useRouter();
+  const [inputVal, setInputVal] = useState<string>('');
+  const [buttonText, setButtonText] = useState('Add');
+  const [channelsList, setChannelsList] = useState<string[]>([]);
+  
+  
+  
   useEffect(()=> {
     inputRef.current && inputRef.current.focus();
   },[])
 
-  const handleAdd = () => {     
-   setChannelsList([...channelsList, inputVal]);
-   setInputVal('');
-   inputRef.current && inputRef.current.focus();
+  function handleAdd() {
+    console.log('chamou handleAdd');
+      setInputVal((prevInputVal) => {
+        // const currentInputVal = prevInputVal;
+        setChannelsList((prevChannelsList) => [...prevChannelsList, prevInputVal]);
+        return '';
+      });
+      inputRef.current && inputRef.current.focus();
   }
 
-  const handleDelete = (index: any) => {    
+
+ const [buttonFunc, setButtonFunc] = useState<() => void>(() => handleAdd);
+
+  const handleDelete = (index: any) => {
     if(index === 0) {
       setChannelsList(channelsList.slice(1))      
     }else if(index === (channelsList.length - 1)) {
@@ -30,7 +39,24 @@ export default function Multitwitch() {
     }
   }
 
-  const handleEnter = (e: any) => e.key === 'Enter' && handleAdd();
+  
+const handleEnter = (e: any) => e.key === 'Enter' && handleAdd();
+  
+  const changeToEdit = (index: any) => {
+    // setInputVal(channelsList[index]);
+    // setButtonText('Edit');
+    // const handleEdit = () => {
+    //   if(index === 0) {
+    //     setChannelsList(channelsList.slice(1))      
+    //   }else if(index === (channelsList.length - 1)) {
+    //     setChannelsList(channelsList.slice(0, -1));
+    //   } else {
+    //     setChannelsList([...channelsList.slice(0, index), ...channelsList.slice(index+1)])
+    //   }
+    // }
+    // setButtonFunc(() => handleEdit);
+  }
+
 
   const handleGo = () => {
     router.push(`lives/${channelsList.join('/')}`)
@@ -48,11 +74,11 @@ export default function Multitwitch() {
         <div>        
           <div className={styles.inputContainer}>          
             <input type="text" value={inputVal} ref={inputRef} onChange={ e => setInputVal(e.target.value) } onKeyUp={e => handleEnter(e)}/>
-            <button onClick={() => handleAdd()}>Add</button>
+            <button onClick={() => buttonFunc()}>{buttonText}</button>
             <button disabled={channelsList.length <= 0} onClick={handleGo}>Go</button>
           </div>
           <div className={styles.channelsList}>
-              {channelsList && channelsList.map( (item, i) => <ListItem handleDelete={handleDelete} key={i} index={i} value={item}/> )}
+              {channelsList && channelsList.map( (item, i) => <ListItem handleDelete={handleDelete} changeToEdit={changeToEdit} key={i} index={i} value={item}/> )}
           </div>
         </div>
       </div>
