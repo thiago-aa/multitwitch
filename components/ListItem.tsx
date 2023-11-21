@@ -5,12 +5,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 interface ListItemProps {
   value: string;
   handleDelete: (index: any) => void;
-  changeToEdit: (index: any) => void;
+  handleEdit: (index: any) => void;
   index: number;
 }
 
 export default function ListItem(props: ListItemProps) {
-const {value, handleDelete, changeToEdit, index} = props;
+const {value, handleDelete, handleEdit, index} = props;
 
 return (
   <div className={styles.item}>
@@ -19,7 +19,7 @@ return (
       <button onClick={() => handleDelete(index)}>
         <DeleteIcon className={styles.icons}/>
       </button>
-      <button onClick={() => changeToEdit(index)}>
+      <button onClick={() => handleEdit(index)}>
         <EditIcon className={styles.icons}/>
       </button>
     </div>

@@ -9,25 +9,100 @@ export default function Multitwitch() {
   const [inputVal, setInputVal] = useState<string>('');
   const [buttonText, setButtonText] = useState('Add');
   const [channelsList, setChannelsList] = useState<string[]>([]);
-  
+  const [counter, setCounter] = useState<number>(0);
+  const [currentIndex, setCurrentIndex] = useState<number>();
+
   
   
   useEffect(()=> {
     inputRef.current && inputRef.current.focus();
   },[])
 
-  function handleAdd() {
-    console.log('chamou handleAdd');
-      setInputVal((prevInputVal) => {
-        // const currentInputVal = prevInputVal;
-        setChannelsList((prevChannelsList) => [...prevChannelsList, prevInputVal]);
-        return '';
-      });
-      inputRef.current && inputRef.current.focus();
-  }
 
 
- const [buttonFunc, setButtonFunc] = useState<() => void>(() => handleAdd);
+  const handleAdd = useCallback(
+    () => {
+      console.log('entrou no handleAdd');
+      setCounter(counter + 1);
+      console.log('counter:', counter)
+      console.log('inputVal:', inputVal);
+      console.log('channelsList:', channelsList);
+      setChannelsList([...channelsList, inputVal]);
+      setInputVal('');
+    },
+    [channelsList, inputVal]
+  );
+  
+    const handleSet = (arr: any[]) => {
+      setChannelsList(arr);
+    }
+
+  const handleEdit = useCallback(
+    () => {
+        console.log('entrou no handleEdit')
+        console.log('currentIndex dentro do handleEdit: ', currentIndex);
+          if(currentIndex  === 0) {
+            const auxArr = channelsList.slice(1);
+            auxArr.unshift(inputVal)
+            setChannelsList(auxArr);
+            setInputVal('');
+            setButtonText('Add');
+            inputRef.current && inputRef.current.focus();
+          } else if(currentIndex  === (channelsList.length - 1)) {
+            const auxArr = channelsList.slice(0, -1);
+            auxArr.push(inputVal);
+            setChannelsList(auxArr);
+            setInputVal('');
+            setButtonText('Add');
+            inputRef.current && inputRef.current.focus();
+          } else if(currentIndex){
+            const auxArr = [...channelsList]
+            auxArr.splice(currentIndex, 1, inputVal);
+            setChannelsList(auxArr);
+            setInputVal('');
+            setButtonText('Add');
+            inputRef.current && inputRef.current.focus();
+          }
+      },
+    [channelsList, inputVal, currentIndex]
+  );
+  
+  const [buttonFunc, setButtonFunc] = useState<() => void>(() => handleAdd);
+  
+  const setEdit = useCallback(
+    (index: any) => {
+      console.log('entrou nosetEdit');
+      console.log('valor do inputval: ', inputVal);
+      console.log('valor do item no channelsList: ', channelsList[index]);
+      setInputVal(channelsList[index]);
+      setCurrentIndex(index);
+      setButtonFunc(() => handleEdit);
+      setCounter(counter + 1);
+      console.log('buttonFunc:', buttonFunc)
+      console.log('counter:', counter)
+      setButtonText('Edit');
+    }, [inputVal, channelsList]
+  );
+
+  useEffect(()=> {
+    if(buttonText === 'Add'){
+      setButtonFunc(() => handleAdd);
+    } else {
+      setButtonFunc(() => handleEdit);
+      setCounter(counter+1);
+    }
+  },[inputVal, channelsList, currentIndex])
+
+
+  // function handleAdd2(currentInputVal: any[]){
+  // //   console.log('chamou handleAdd');
+  // //   console.log('currentInputVal:', currentInputVal);
+  // //   console.log('channelsList:', channelsList);
+  // //   inputRef.current && inputRef.current.focus();
+  // // }
+
+
+
 
   const handleDelete = (index: any) => {
     if(index === 0) {
@@ -40,23 +115,9 @@ export default function Multitwitch() {
   }
 
   
-const handleEnter = (e: any) => e.key === 'Enter' && handleAdd();
+const handleEnter = (e: any) => e.key === 'Enter' && buttonFunc();
   
-  const changeToEdit = (index: any) => {
-    // setInputVal(channelsList[index]);
-    // setButtonText('Edit');
-    // const handleEdit = () => {
-    //   if(index === 0) {
-    //     setChannelsList(channelsList.slice(1))      
-    //   }else if(index === (channelsList.length - 1)) {
-    //     setChannelsList(channelsList.slice(0, -1));
-    //   } else {
-    //     setChannelsList([...channelsList.slice(0, index), ...channelsList.slice(index+1)])
-    //   }
-    // }
-    // setButtonFunc(() => handleEdit);
-  }
-
+  
 
   const handleGo = () => {
     router.push(`lives/${channelsList.join('/')}`)
@@ -74,11 +135,11 @@ const handleEnter = (e: any) => e.key === 'Enter' && handleAdd();
         <div>        
           <div className={styles.inputContainer}>          
             <input type="text" value={inputVal} ref={inputRef} onChange={ e => setInputVal(e.target.value) } onKeyUp={e => handleEnter(e)}/>
-            <button onClick={() => buttonFunc()}>{buttonText}</button>
+            <button onClick={buttonFunc} key={counter}>{buttonText}</button>
             <button disabled={channelsList.length <= 0} onClick={handleGo}>Go</button>
           </div>
           <div className={styles.channelsList}>
-              {channelsList && channelsList.map( (item, i) => <ListItem handleDelete={handleDelete} changeToEdit={changeToEdit} key={i} index={i} value={item}/> )}
+              {channelsList && channelsList.map( (item, i) => <ListItem handleDelete={handleDelete} handleEdit={setEdit} key={i} index={i} value={item}/> )}
           </div>
         </div>
       </div>
