@@ -2,6 +2,7 @@ import  styles  from '../styles/Home.module.css'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router';
 import ListItem from '@/components/ListItem';
+import Warning from '@/components/Warning';
 
 export default function Multitwitch() {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -9,33 +10,46 @@ export default function Multitwitch() {
   const [inputVal, setInputVal] = useState<string>('');
   const [buttonText, setButtonText] = useState('Add');
   const [channelsList, setChannelsList] = useState<string[]>([]);
-  const [counter, setCounter] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState<number>();
+  const [warningText, setWarningText] = useState<string>('');
+  const [showWarning, setShowWarning] = useState<boolean>(false);
 
-  
-  
   useEffect(()=> {
     inputRef.current && inputRef.current.focus();
   },[])
 
-
+  const validateField = (text: string) => {
+    text = text.trim();
+    if(text.length === 0 ) {
+      setShowWarning(true);
+      setWarningText('Please fill in the channel name field with the name of the channel');
+      return false;
+    } else if(text.indexOf(' ') !== -1) {
+      setShowWarning(true);
+      setWarningText('Spaces are not allowed in the channel name');
+      return false;
+    }
+    if(showWarning) {
+      setShowWarning(false);
+    }
+    return true;
+  }
 
   const handleAdd = useCallback(
     () => {
-      console.log('entrou no handleAdd');
-      setCounter(counter + 1);
-      console.log('counter:', counter)
-      console.log('inputVal:', inputVal);
-      console.log('channelsList:', channelsList);
-      setChannelsList([...channelsList, inputVal]);
-      setInputVal('');
+      if(!validateField(inputVal)) {
+        inputRef.current && inputRef.current.focus();
+      } else {
+        console.log('entrou no handleAdd');
+        console.log('inputVal:', inputVal);
+        console.log('channelsList:', channelsList);
+        setChannelsList([ inputVal, ...channelsList]);
+        setInputVal('');
+        inputRef.current && inputRef.current.focus();
+      }
     },
     [channelsList, inputVal]
   );
-  
-    const handleSet = (arr: any[]) => {
-      setChannelsList(arr);
-    }
 
   const handleEdit = useCallback(
     () => {
@@ -63,6 +77,9 @@ export default function Multitwitch() {
             setButtonText('Add');
             inputRef.current && inputRef.current.focus();
           }
+          if(showWarning) {
+            setShowWarning(false);
+          }
       },
     [channelsList, inputVal, currentIndex]
   );
@@ -77,9 +94,7 @@ export default function Multitwitch() {
       setInputVal(channelsList[index]);
       setCurrentIndex(index);
       setButtonFunc(() => handleEdit);
-      setCounter(counter + 1);
       console.log('buttonFunc:', buttonFunc)
-      console.log('counter:', counter)
       setButtonText('Edit');
     }, [inputVal, channelsList]
   );
@@ -89,20 +104,8 @@ export default function Multitwitch() {
       setButtonFunc(() => handleAdd);
     } else {
       setButtonFunc(() => handleEdit);
-      setCounter(counter+1);
     }
   },[inputVal, channelsList, currentIndex])
-
-
-  // function handleAdd2(currentInputVal: any[]){
-  // //   console.log('chamou handleAdd');
-  // //   console.log('currentInputVal:', currentInputVal);
-  // //   console.log('channelsList:', channelsList);
-  // //   inputRef.current && inputRef.current.focus();
-  // // }
-
-
-
 
   const handleDelete = (index: any) => {
     if(index === 0) {
@@ -133,9 +136,10 @@ const handleEnter = (e: any) => e.key === 'Enter' && buttonFunc();
       <div className={styles.main}>
         <h2>Add Channels</h2>
         <div>        
+          <Warning text={warningText} hidden={!showWarning}/>
           <div className={styles.inputContainer}>          
             <input type="text" value={inputVal} ref={inputRef} onChange={ e => setInputVal(e.target.value) } onKeyUp={e => handleEnter(e)}/>
-            <button onClick={buttonFunc} key={counter}>{buttonText}</button>
+            <button onClick={buttonFunc}>{buttonText}</button>
             <button disabled={channelsList.length <= 0} onClick={handleGo}>Go</button>
           </div>
           <div className={styles.channelsList}>

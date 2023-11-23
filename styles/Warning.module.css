@@ -1,0 +1,13 @@
+.warning {
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  background-color: hsl(1, 100%, 60%);
+  height: 25px;
+  border-radius: 3px;
+}
+
+.icon {
+  background-color: transparent;
+  margin-right: 3px;
+}
