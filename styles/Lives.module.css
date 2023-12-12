@@ -1,0 +1,34 @@
+.mainContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  /* border: solid 1px red; */
+}
+
+.channelsContainer {
+  width: 75%;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+  gap: 5px; */
+} 
+
+.channelsContainer > div {
+  flex-grow: 0;
+  flex-shrink: 1;
+  /* flex-basis:  %; */
+  margin: 1px;
+  aspect-ratio: 16 / 9;
+}
+
+.chatContainer {
+  height: 100%;
+  flex-grow: 1;
+  color: #ddd;
+}
+
+/* http://localhost:3000/lives/m0xyy/ljoga/gaules/peqitw/sinatraa/ml7support/m0xyy/ljoga/gaules/m0xyy/ml7support/m0xyy/ljoga/gaules/m0xyy/gaules */
