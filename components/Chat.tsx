@@ -1,33 +1,77 @@
-import { channel } from 'diagnostics_channel';
 import styles from '../styles/Chat.module.css';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface ChatProps {
   channelsList: string[] | string;
 }
 
 export default function Chat(props: ChatProps) {
-  const {channelsList} = props;
-  const [channelChat, setChannelChat] = useState(Array.isArray(channelsList) ? channelsList[0] : channelsList);
-
-  const renderButtons = () => {
-    if(Array.isArray(channelsList)) {
-      return channelsList.map(((channel, index) => {
-        return <button onClick={() => setChannelChat(channel)}>{channel}</button>
-      }))
+  
+  const normalizeChatList = () => {
+    if(Array.isArray(props.channelsList)) {
+      return props.channelsList.map((channel, index) => {
+        if(index === 0) {
+          return {
+            name: channel,
+            selected: true
+          }
+        }
+        return {
+          name: channel,
+          selected: false
+        }
+      })
+    } else return [{name: props.channelsList}];
+  }
+  console.log(normalizeChatList());
+  const [channelsList, setChannelsList] = useState(normalizeChatList());
+  const [channelChat, setChannelChat] = useState(Array.isArray(channelsList) ? channelsList[0].name : channelsList);
+  
+  const handleChatButton = (channel: any, index: number) => {
+    setChannelChat(channel.name);
+    if(Array.isArray(channelsList)){
+      setChannelsList(
+        channelsList.map((channel, i) => {
+          if(i === index) {
+            return {
+              name: channel.name,
+              selected: true
+            }
+          } else {
+            return {
+              name: channel.name,
+              selected: false
+            }
+          }
+        })
+      )
     }
   }
-  let chatUrl =  `https://twitch.tv/embed/${channelChat}/chat?parent=localhost`;
+
+  const renderButtons = useCallback(
+    () => {
+      console.log('channelsList no render Buttons', channelsList);
+      if(Array.isArray(channelsList)) {
+        console.log('entrou no if do render buttons');
+        return channelsList.map(((channel, index) => {
+          return <button key={index}  className={channel.selected ? styles.chatButtonSelected : styles.chatButton} onClick={e => handleChatButton(channel, index)}>{channel.name}</button>
+        }))
+      } else return <p>aquelas coisa né man</p>
+    }, [channelsList]) 
+
+  const [chatUrl, setChatUrl] =  useState(`https://twitch.tv/embed/${channelChat}/chat?parent=localhost&darkpopout`);
+  
   useEffect(()=> {
-    chatUrl = `https://twitch.tv/embed/${channelChat}/chat?parent=localhost`;
+    setChatUrl( `https://twitch.tv/embed/${channelChat}/chat?parent=localhost&darkpopout`);
   }, [channelChat])
+
 
   return (
     <div className={styles.chatContainer}>
-      <div>
+      <div className={styles.buttonsContainer}>
         {renderButtons()}
       </div>
-      <iframe src={`https://twitch.tv/embed/${channelChat}/chat?parent=localhost`} height="90%" width="100%"></iframe>
+      <iframe style={{border: 'none'}} src={chatUrl} height="90%" width="100%"></iframe>
     </div>
   )
 }

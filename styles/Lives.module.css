@@ -12,7 +12,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
+  padding: 5px;
   /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
   gap: 5px; */
 } 
@@ -21,14 +21,15 @@
   flex-grow: 0;
   flex-shrink: 1;
   /* flex-basis:  %; */
-  margin: 1px;
+  margin: 2px;
   aspect-ratio: 16 / 9;
 }
 
 .chatContainer {
   height: 100%;
-  flex-grow: 1;
+  width: 30%;
   color: #ddd;
+  padding: 5px;
 }
 
 /* http://localhost:3000/lives/m0xyy/ljoga/gaules/peqitw/sinatraa/ml7support/m0xyy/ljoga/gaules/m0xyy/ml7support/m0xyy/ljoga/gaules/m0xyy/gaules */

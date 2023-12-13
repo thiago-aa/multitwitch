@@ -13,7 +13,7 @@ export default function Lives() {
     if(length >= 2 && length < 5) {
       return '49%';
     } else if (length < 10) {
-      return '33%';
+      return '32%';
     } else {
       return '22%';
     }
@@ -32,7 +32,7 @@ export default function Lives() {
           renderChannels()
         }
       </div>
-      <div style={{flexGrow: '1'}}>
+      <div style={{flexGrow: '1'}} className={styles.chatContainer}>
         <Chat channelsList={channels}/>
       </div>
     </div>
