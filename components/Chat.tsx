@@ -59,10 +59,10 @@ export default function Chat(props: ChatProps) {
       } else return <p>aquelas coisa né man</p>
     }, [channelsList]) 
 
-  const [chatUrl, setChatUrl] =  useState(`https://twitch.tv/embed/${channelChat}/chat?parent=localhost&darkpopout`);
+  const [chatUrl, setChatUrl] =  useState(`https://twitch.tv/embed/${channelChat}/chat?parent=multi-twitch-ecru.vercel.app/&darkpopout`);
   
   useEffect(()=> {
-    setChatUrl( `https://twitch.tv/embed/${channelChat}/chat?parent=localhost&darkpopout`);
+    setChatUrl( `https://twitch.tv/embed/${channelChat}/chat?parent=multi-twitch-ecru.vercel.app/&darkpopout`);
   }, [channelChat])
 
   useEffect(()=> {
