@@ -40,9 +40,6 @@ export default function Multitwitch() {
       if(!validateField(inputVal)) {
         inputRef.current && inputRef.current.focus();
       } else {
-        console.log('entrou no handleAdd');
-        console.log('inputVal:', inputVal);
-        console.log('channelsList:', channelsList);
         setChannelsList([ inputVal, ...channelsList]);
         setInputVal('');
         inputRef.current && inputRef.current.focus();
@@ -53,8 +50,6 @@ export default function Multitwitch() {
 
   const handleEdit = useCallback(
     () => {
-        console.log('entrou no handleEdit')
-        console.log('currentIndex dentro do handleEdit: ', currentIndex);
           if(currentIndex  === 0) {
             const auxArr = channelsList.slice(1);
             auxArr.unshift(inputVal)
@@ -88,13 +83,9 @@ export default function Multitwitch() {
   
   const setEdit = useCallback(
     (index: any) => {
-      console.log('entrou nosetEdit');
-      console.log('valor do inputval: ', inputVal);
-      console.log('valor do item no channelsList: ', channelsList[index]);
       setInputVal(channelsList[index]);
       setCurrentIndex(index);
       setButtonFunc(() => handleEdit);
-      console.log('buttonFunc:', buttonFunc)
       setButtonText('Edit');
     }, [inputVal, channelsList]
   );

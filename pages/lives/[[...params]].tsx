@@ -33,7 +33,7 @@ export default function Lives() {
         }
       </div>
       <div style={{flexGrow: '1'}} className={styles.chatContainer}>
-        <Chat channelsList={channels}/>
+       {channels && <Chat channelsList={channels}/>} 
       </div>
     </div>
   )

@@ -21,7 +21,7 @@ export default function Chat(props: ChatProps) {
           selected: false
         }
       })
-    } else return [{name: props.channelsList}];
+    } else return [{name: props.channelsList, selected: true}];
   }
   console.log(normalizeChatList());
   const [channelsList, setChannelsList] = useState(normalizeChatList());
@@ -49,8 +49,8 @@ export default function Chat(props: ChatProps) {
   }
 
   const renderButtons = useCallback(
-    () => {
-      console.log('channelsList no render Buttons', channelsList);
+    (channels: any) => {
+      console.log('channelsList no render Buttons', channels);
       if(Array.isArray(channelsList)) {
         console.log('entrou no if do render buttons');
         return channelsList.map(((channel, index) => {
@@ -65,11 +65,15 @@ export default function Chat(props: ChatProps) {
     setChatUrl( `https://twitch.tv/embed/${channelChat}/chat?parent=localhost&darkpopout`);
   }, [channelChat])
 
+  useEffect(()=> {
+    setChannelsList(normalizeChatList());
+  }, [])
+
 
   return (
     <div className={styles.chatContainer}>
       <div className={styles.buttonsContainer}>
-        {renderButtons()}
+        {channelsList.length >= 1 ? renderButtons(channelsList) : <p>ai n currrti</p>}
       </div>
       <iframe style={{border: 'none'}} src={chatUrl} height="90%" width="100%"></iframe>
     </div>
