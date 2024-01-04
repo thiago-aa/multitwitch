@@ -8,7 +8,7 @@
   font-size: 0.9rem;
   border: none;
   border-right: 1px #333 solid;
-  background-color: hsl(270, 10%, 40%);
+  background-color: hsl(270, 90%, 40%);
   margin-bottom: 5px;
   cursor: pointer;
 }
@@ -18,7 +18,7 @@
   font-size: 0.9rem;
   border: none;
   border-right: 1px #333 solid;
-  background-color: hsl(270, 90%, 50%);
+  background-color: hsl(270, 25%, 30%);
   margin-bottom: 5px;
   cursor: pointer;
 }

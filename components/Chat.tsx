@@ -23,7 +23,6 @@ export default function Chat(props: ChatProps) {
       })
     } else return [{name: props.channelsList, selected: true}];
   }
-  console.log(normalizeChatList());
   const [channelsList, setChannelsList] = useState(normalizeChatList());
   const [channelChat, setChannelChat] = useState(Array.isArray(channelsList) ? channelsList[0].name : channelsList);
   
@@ -50,19 +49,17 @@ export default function Chat(props: ChatProps) {
 
   const renderButtons = useCallback(
     (channels: any) => {
-      console.log('channelsList no render Buttons', channels);
       if(Array.isArray(channelsList)) {
-        console.log('entrou no if do render buttons');
         return channelsList.map(((channel, index) => {
           return <button key={index}  className={channel.selected ? styles.chatButtonSelected : styles.chatButton} onClick={e => handleChatButton(channel, index)}>{channel.name}</button>
         }))
       } else return <p>aquelas coisa né man</p>
     }, [channelsList]) 
 
-  const [chatUrl, setChatUrl] =  useState(`https://twitch.tv/embed/${channelChat}/chat?parent=multi-twitch-ecru.vercel.app/&darkpopout`);
+  const [chatUrl, setChatUrl] =  useState(`https://twitch.tv/embed/${channelChat}/chat?parent=multitwitch-one.vercel.app&darkpopout`);
   
   useEffect(()=> {
-    setChatUrl( `https://twitch.tv/embed/${channelChat}/chat?parent=multi-twitch-ecru.vercel.app/&darkpopout`);
+    setChatUrl( `https://twitch.tv/embed/${channelChat}/chat?parent=multitwitch-one.vercel.app&darkpopout`);
   }, [channelChat])
 
   useEffect(()=> {

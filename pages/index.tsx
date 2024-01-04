@@ -121,7 +121,7 @@ const handleEnter = (e: any) => e.key === 'Enter' && buttonFunc();
     <div className={styles.mainContainer}>
       <nav className={styles.title}>
         <h1>
-          Multitwitch.
+          Multitwitch
         </h1>
       </nav>
       <div className={styles.main}>
